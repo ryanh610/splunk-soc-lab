@@ -24,17 +24,17 @@ Each detection is in [`detections/`](detections/) as a standalone `.spl` file wi
 
 | # | Detection | MITRE ATT&CK | Data Source |
 |---|---|---|---|
-| 1 | [Failed logon brute force](detections/01-brute-force.spl) | [T1110 — Brute Force](https://attack.mitre.org/techniques/T1110/) | `WinEventLog:Security` (EventCode 4625) |
-| 2 | [Suspicious PowerShell execution](detections/02-suspicious-powershell.spl) | [T1059.001 — PowerShell](https://attack.mitre.org/techniques/T1059/001/) | Sysmon EventCode 1 |
-| 3 | [Process from suspicious location](detections/03-suspicious-location.spl) | [T1036 — Masquerading](https://attack.mitre.org/techniques/T1036/) | Sysmon EventCode 1 |
-| 4 | [Script host spawning shell](detections/04-script-host-shell.spl) | [T1566 — Phishing](https://attack.mitre.org/techniques/T1566/) | Sysmon EventCode 1 |
+| 1 | [Failed logon brute force](detections/01-brute-force.spl) | [T1110: Brute Force](https://attack.mitre.org/techniques/T1110/) | `WinEventLog:Security` (EventCode 4625) |
+| 2 | [Suspicious PowerShell execution](detections/02-suspicious-powershell.spl) | [T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001/) | Sysmon EventCode 1 |
+| 3 | [Process from suspicious location](detections/03-suspicious-location.spl) | [T1036: Masquerading](https://attack.mitre.org/techniques/T1036/) | Sysmon EventCode 1 |
+| 4 | [Script host spawning shell](detections/04-script-host-shell.spl) | [T1566: Phishing](https://attack.mitre.org/techniques/T1566/) | Sysmon EventCode 1 |
 | 5 | [Rare process by parent](detections/05-rare-process.spl) | Anomaly hunting (multi-technique) | Sysmon EventCode 1 |
 
 ---
 
 ## Validation
 
-Each detection was validated against controlled adversary emulation on the lab host — benign payloads exhibiting the same behavioral patterns as real adversary tradecraft. Evidence screenshots and trigger documentation live in [`screenshots/`](screenshots/).
+Each detection was validated against controlled adversary emulation on the lab host: benign payloads exhibiting the same behavioral patterns as real adversary tradecraft. Evidence screenshots and trigger documentation live in [`screenshots/`](screenshots/).
 
 | Detection | Trigger Method |
 |---|---|
@@ -89,4 +89,4 @@ A few real-world Splunk admin issues encountered and resolved during the build:
 
 ---
 
-*Built by Ryan Howley (https://github.com/ryanh610) — May 2026*
+*Built by Ryan Howley (https://github.com/ryanh610) - May 2026*
