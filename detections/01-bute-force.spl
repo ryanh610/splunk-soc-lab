@@ -1,0 +1,17 @@
+# Detection 1: Failed Logon Brute Force
+# MITRE ATT&CK: T1110 (Brute Force)
+# Data Source: WinEventLog:Security, EventCode 4625
+#
+# Logic: Bucket failed logon events into 5-minute windows and surface
+# any host where 5+ failures occurred within a single window. The
+# values() aggregation captures which account names were targeted,
+# which is essential triage context for the analyst.
+#
+# False-positive considerations: Service accounts with stale cached
+# credentials and users locked out after password changes can both
+# trigger this. Tune by excluding known service account names.
+
+index=main sourcetype=WinEventLog:Security EventCode=4625
+| bucket _time span=5m
+| stats count AS failed_logons, values(Account_Name) AS accounts_targeted by _time, host
+| where failed_logons >= 5
