@@ -2,7 +2,7 @@
 
 A home lab demonstrating the end-to-end workflow of a junior SOC analyst: ingesting Windows Event Logs and Sysmon telemetry into Splunk Enterprise, authoring SPL-based detections aligned to MITRE ATT&CK, and validating each detection through controlled adversary emulation.
 
-> **Status:** Detection authoring complete. Validation screenshots and dashboard in progress: see [roadmap](#roadmap).
+> **Status:** Detection authoring and validation complete. Dashboard and scheduled alerts pending.
 
 ---
 
@@ -32,6 +32,20 @@ Each detection is in [`detections/`](detections/) as a standalone `.spl` file wi
 
 ---
 
+## Validation
+
+Each detection was validated against controlled adversary emulation on the lab host — benign payloads exhibiting the same behavioral patterns as real adversary tradecraft. Evidence screenshots and trigger documentation live in [`screenshots/`](screenshots/).
+
+| Detection | Trigger Method |
+|---|---|
+| 1. Brute force | Repeated `runas` with bad credentials → EventCode 4625 |
+| 2. Suspicious PowerShell | `Write-Host` payload base64-encoded + executed via `-EncodedCommand` |
+| 3. Suspicious location | `cmd.exe` copied to `%TEMP%` under a different name and executed |
+| 4. Script host shell | VBScript via `wscript.exe` spawning `cmd.exe` |
+| 5. Rare process | Observed naturally on host (hunting query, no trigger needed) |
+
+---
+
 ## Ingestion configuration
 
 The lab ingests two distinct Windows data sources via a single `inputs.conf`. See [`configs/inputs.conf`](configs/inputs.conf) for the full file.
@@ -48,7 +62,7 @@ A few real-world Splunk admin issues encountered and resolved during the build:
 
 **TA-driven sourcetype rewriting.** After installing the Splunk Add-on for Sysmon, all existing searches against `sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"` returned zero results. The add-on silently rewrites the sourcetype to lowercase `xmlwineventlog` on ingest. Diagnosed via `index=* | stats count by sourcetype` and updated all detections accordingly.
 
-**Splunk 10 web UI regression.** The "Local event log collection" page in Settings → Data Inputs returns a 404 in Splunk Enterprise 10.x on Windows. Worked around by configuring all Windows Event Log inputs directly via `inputs.conf` — which is the preferred admin workflow regardless.
+**Splunk 10 web UI regression.** The "Local event log collection" page in Settings → Data Inputs returns a 404 in Splunk Enterprise 10.x on Windows. Worked around by configuring all Windows Event Log inputs directly via `inputs.conf` which is the preferred admin workflow regardless.
 
 ---
 
@@ -59,7 +73,7 @@ A few real-world Splunk admin issues encountered and resolved during the build:
 - [x] Sysmon installation with SwiftOnSecurity config
 - [x] Splunk Add-on for Sysmon, field extraction validated
 - [x] Five SPL detections authored and MITRE-mapped
-- [ ] Adversary emulation triggers + evidence screenshots
+- [x] Adversary emulation triggers + evidence screenshots ([see results](screenshots/))
 - [ ] Scheduled alerts for each detection
 - [ ] Security overview dashboard
 - [ ] Splunk Security Essentials integration notes
