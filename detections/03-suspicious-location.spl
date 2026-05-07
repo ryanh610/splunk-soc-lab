@@ -1,0 +1,20 @@
+# Detection 3: Process Execution from Suspicious Location
+# MITRE ATT&CK: T1036 (Masquerading)
+# Data Source: Sysmon EventCode 1 (Process Creation)
+#
+# Logic: Surface any executable running out of user-writable or
+# transient directories (Temp, AppData, Public, Windows\Temp).
+# Legitimate software almost always installs to Program Files or
+# Program Files (x86); attackers and malware droppers commonly
+# stage payloads in user-writable paths.
+#
+# False-positive considerations: Software installers and updaters
+# (Chrome, Teams, Slack, Zoom) routinely drop and execute binaries
+# from AppData. Exclude by signed publisher or Image path of the
+# known-good updater.
+
+index=main sourcetype=xmlwineventlog EventCode=1
+  (Image="*\\AppData\\Local\\Temp\\*" OR Image="*\\AppData\\Roaming\\*"
+   OR Image="*\\Users\\Public\\*" OR Image="*\\Windows\\Temp\\*")
+| table _time, host, User, ParentImage, Image, CommandLine
+| sort -_time

@@ -1,0 +1,18 @@
+# Detection 5: Rare Process by Parent (Anomaly Hunt)
+# MITRE ATT&CK: Multi-technique (anomaly-based)
+# Data Source: Sysmon EventCode 1 (Process Creation)
+#
+# Logic: Identify executables observed fewer than 3 times in the
+# search window. Most environments have a long tail of rare binaries
+# that warrant human review - ad-hoc tools, one-off scripts, and
+# occasionally malware. This is a hunting query rather than a
+# precision-tuned alert.
+#
+# Usage: Run on demand as a hunting tool, not as a scheduled alert.
+# The values(ParentImage) field lets the analyst pivot quickly to the
+# parent process to assess whether the chain looks legitimate.
+
+index=main sourcetype=xmlwineventlog EventCode=1
+| stats count, values(ParentImage) AS parents by Image
+| where count < 3
+| sort count

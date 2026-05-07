@@ -1,0 +1,21 @@
+# Detection 4: Script Host or Office App Spawning a Shell
+# MITRE ATT&CK: T1566 (Phishing) - downstream of macro/script execution
+# Data Source: Sysmon EventCode 1 (Process Creation)
+#
+# Logic: Detect when a script interpreter (wscript, cscript) or Office
+# application (Word, Excel, PowerPoint, Outlook) spawns a command shell
+# (cmd, powershell). This is the canonical post-exploitation pattern
+# for macro-based malware and script-based droppers. There is virtually
+# no legitimate reason for WINWORD.EXE to spawn cmd.exe.
+#
+# False-positive considerations: Some enterprise-deployed Office add-ins
+# (rare) and developer scripting can produce these chains. Investigate
+# every hit; whitelist by full CommandLine if a true positive recurs.
+
+index=main sourcetype=xmlwineventlog EventCode=1
+  (ParentImage="*\\WINWORD.EXE" OR ParentImage="*\\EXCEL.EXE"
+   OR ParentImage="*\\POWERPNT.EXE" OR ParentImage="*\\OUTLOOK.EXE"
+   OR ParentImage="*\\wscript.exe" OR ParentImage="*\\cscript.exe")
+  (Image="*\\cmd.exe" OR Image="*\\powershell.exe"
+   OR Image="*\\mshta.exe")
+| table _time, host, User, ParentImage, Image, CommandLine

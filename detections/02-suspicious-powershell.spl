@@ -1,0 +1,18 @@
+# Detection 2: Suspicious PowerShell Execution
+# MITRE ATT&CK: T1059.001 (Command and Scripting Interpreter: PowerShell)
+# Data Source: Sysmon EventCode 1 (Process Creation)
+#
+# Logic: Flag PowerShell invocations that use base64-encoded commands,
+# remote download cradles, or execution-policy bypasses. These three
+# patterns dominate real-world malicious PowerShell.
+#
+# False-positive considerations: Some legitimate enterprise tooling
+# (SCCM, Intune, certain installers) uses -EncodedCommand or
+# -ExecutionPolicy Bypass. Baseline the environment and exclude
+# known-good ParentImage values.
+
+index=main sourcetype=xmlwineventlog EventCode=1
+  Image="*\\powershell.exe"
+  (CommandLine="*-enc*" OR CommandLine="*-EncodedCommand*"
+   OR CommandLine="*DownloadString*" OR CommandLine="*-ExecutionPolicy Bypass*")
+| table _time, host, User, ParentImage, Image, CommandLine
