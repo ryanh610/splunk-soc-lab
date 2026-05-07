@@ -8,8 +8,6 @@ A home lab demonstrating the end-to-end workflow of a junior SOC analyst: ingest
 
 ## Architecture
 
-![Architecture Diagram](diagrams/architecture.png)
-
 | Layer | Component |
 |---|---|
 | Endpoint telemetry | Windows Event Logs (Application, Security, System) + Sysmon with [SwiftOnSecurity config](https://github.com/SwiftOnSecurity/sysmon-config) |
