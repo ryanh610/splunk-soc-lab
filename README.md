@@ -27,19 +27,19 @@ Each detection is in [`detections/`](detections/) as a standalone `.spl` file wi
 
 | # | Detection | MITRE ATT&CK | Data Source |
 |---|---|---|---|
-| 1 | [Failed logon brute force](detections/01-brute-force.spl) | [T1110 — Brute Force](https://attack.mitre.org/techniques/T1110/) | `WinEventLog:Security` (EventCode 4625) |
-| 2 | [Suspicious PowerShell execution](detections/02-suspicious-powershell.spl) | [T1059.001 — PowerShell](https://attack.mitre.org/techniques/T1059/001/) | Sysmon EventCode 1 |
-| 3 | [Process from suspicious location](detections/03-suspicious-location.spl) | [T1036 — Masquerading](https://attack.mitre.org/techniques/T1036/) | Sysmon EventCode 1 |
-| 4 | [Script host spawning shell](detections/04-script-host-shell.spl) | [T1566 — Phishing](https://attack.mitre.org/techniques/T1566/) | Sysmon EventCode 1 |
+| 1 | [Failed logon brute force](detections/01-brute-force.spl) | [T1110: Brute Force](https://attack.mitre.org/techniques/T1110/) | `WinEventLog:Security` (EventCode 4625) |
+| 2 | [Suspicious PowerShell execution](detections/02-suspicious-powershell.spl) | [T1059.001: PowerShell](https://attack.mitre.org/techniques/T1059/001/) | Sysmon EventCode 1 |
+| 3 | [Process from suspicious location](detections/03-suspicious-location.spl) | [T1036: Masquerading](https://attack.mitre.org/techniques/T1036/) | Sysmon EventCode 1 |
+| 4 | [Script host spawning shell](detections/04-script-host-shell.spl) | [T1566: Phishing](https://attack.mitre.org/techniques/T1566/) | Sysmon EventCode 1 |
 | 5 | [Rare process by parent](detections/05-rare-process.spl) | Anomaly hunting (multi-technique) | Sysmon EventCode 1 |
 
 ### Cloud detections (AWS CloudTrail)
 
 | # | Detection | MITRE ATT&CK | Data Source |
 |---|---|---|---|
-| 6 | [AWS root account usage](detections/06-aws-root-usage.spl) | [T1078.004 — Cloud Accounts](https://attack.mitre.org/techniques/T1078/004/) | AWS CloudTrail |
-| 7 | [Console login without MFA](detections/07-aws-login-no-mfa.spl) | [T1078.004 — Cloud Accounts](https://attack.mitre.org/techniques/T1078/004/) | AWS CloudTrail |
-| 8 | [IAM user or access key creation](detections/08-aws-iam-creation.spl) | [T1136.003 — Create Cloud Account](https://attack.mitre.org/techniques/T1136/003/) | AWS CloudTrail |
+| 6 | [AWS root account usage](detections/06-aws-root-usage.spl) | [T1078.004: Cloud Accounts](https://attack.mitre.org/techniques/T1078/004/) | AWS CloudTrail |
+| 7 | [Console login without MFA](detections/07-aws-login-no-mfa.spl) | [T1078.004: Cloud Accounts](https://attack.mitre.org/techniques/T1078/004/) | AWS CloudTrail |
+| 8 | [IAM user or access key creation](detections/08-aws-iam-creation.spl) | [T1136.003: Create Cloud Account](https://attack.mitre.org/techniques/T1136/003/) | AWS CloudTrail |
 
 ---
 
