@@ -1,0 +1,20 @@
+# Detection 8: AWS IAM User or Access Key Creation
+# MITRE ATT&CK: T1136.003 (Create Account: Cloud Account)
+# Data Source: AWS CloudTrail (sourcetype=aws:cloudtrail)
+#
+# Logic: Surface IAM identity creation and privilege attachment events.
+# Attackers establishing persistence in a compromised AWS account
+# routinely create new IAM users or access keys with admin policies
+# attached, giving them durable access independent of the original
+# compromised credentials.
+#
+# False-positive considerations: Legitimate onboarding of new users
+# and Terraform/IaC pipelines that provision IAM resources. Tune by
+# allowlisting known automation principals (userIdentity.userName)
+# or by alerting only on creations outside business hours.
+
+index=main sourcetype=aws:cloudtrail
+  (eventName=CreateUser OR eventName=CreateAccessKey OR eventName=AttachUserPolicy
+   OR eventName=AttachRolePolicy OR eventName=PutUserPolicy)
+| table _time, eventName, userIdentity.userName, userIdentity.type, sourceIPAddress, requestParameters.userName, requestParameters.policyArn
+| sort -_time

@@ -1,0 +1,16 @@
+# Detection 7: AWS Console Login Without MFA
+# MITRE ATT&CK: T1078.004 (Valid Accounts: Cloud Accounts)
+# Data Source: AWS CloudTrail (sourcetype=aws:cloudtrail)
+#
+# Logic: Console login events where MFA was not used. Logins without
+# a second factor mean credentials are the only thing protecting the
+# account, which fails to meet baseline cloud security posture.
+#
+# False-positive considerations: Federated logins via SAML/SSO show
+# different MFA fields; tune by excluding federated user types if the
+# environment uses an IdP that handles MFA upstream.
+
+index=main sourcetype=aws:cloudtrail eventName=ConsoleLogin
+| eval mfa_used=if('additionalEventData.MFAUsed'="Yes", "Yes", "No")
+| table _time, userIdentity.userName, userIdentity.type, sourceIPAddress, mfa_used, responseElements.ConsoleLogin
+| sort -_time

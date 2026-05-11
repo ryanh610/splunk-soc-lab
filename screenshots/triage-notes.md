@@ -19,3 +19,7 @@ Conclusion: legitimate auto-update; alert correctly classified as a false positi
 
 Raw alert export: [false-positive-triage-vscode.csv](false-positive-triage-vscode.csv)
 Process tree reconstruction: [triage-corroboration-vscode-update.csv](triage-corroboration-vscode-update.csv)
+
+## Cloud detection observation: behavioral patterns vs. intent
+
+Detection 8 fired on three events from a single user (`admin-ryan`) within 46 seconds: This is textbook attacker persistence behavior compressed into a short window: create user, attach permissions, generate credentials (CreateUser, AttachUserPolicy, and CreateAccessKey). In this case it was legitimate (creation of `test-trigger-user` for lab validation), but the rule correctly surfaces it. Production triage would resolve this by correlating with change management (was an admin onboarding planned?), authentication context (did the IAM user log in from the expected source IP and with MFA?), and downstream activity (did the new user immediately do something unusual?). The detection's job is to put a human in the loop; the human's job is to apply context.

@@ -1,0 +1,17 @@
+# Detection 6: AWS Root Account Usage
+# MITRE ATT&CK: T1078.004 (Valid Accounts: Cloud Accounts)
+# Data Source: AWS CloudTrail (sourcetype=aws:cloudtrail)
+#
+# Logic: Any API call made by the AWS root user. Per AWS best practice
+# and CIS AWS Foundations Benchmark, root should never be used for
+# routine operations. Every event from userIdentity.type=Root is
+# either a misconfiguration or an indicator of compromise.
+#
+# False-positive considerations: Initial account setup, support cases
+# requiring root, and a small set of account-level actions that only
+# root can perform (e.g., closing the account, changing the root
+# email). All of these should be infrequent and pre-planned.
+
+index=main sourcetype=aws:cloudtrail userIdentity.type=Root
+| table _time, eventName, eventSource, sourceIPAddress, userAgent, awsRegion
+| sort -_time
